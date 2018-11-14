@@ -1,18 +1,17 @@
 "use strict";
 
-var Translate = require('@google-cloud/translate');
-var async = require('async');
+const Translate = require('@google-cloud/translate');
 
-var TranslateService = {};
-var translate = new Translate({
+const TranslateService = {};
+const translate = new Translate({
   keyFilename: './src/translator.conf.json',
 });
 
-TranslateService.translateText = function (content, targetLang, next) {
+TranslateService.translateText = (content, targetLang, next)=> {
 
-  var calls = [];
+  const calls = [];
 
-  calls.push(function (callback) {
+  calls.push((callback) => {
 
     translate
       .translate( content, targetLang )
@@ -24,7 +23,7 @@ TranslateService.translateText = function (content, targetLang, next) {
       });
   });
 
-  async.waterfall(calls, function (err, response) {
+  async.waterfall(calls,(err, response) => {
     if (next) next(err, response);
   });
 };
